@@ -9,10 +9,9 @@ namespace Game1
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Furniture ArtRoom;
-        Furniture ArtFurniture;
+        Sprite ArtRoom;
+        Sprite ArtFurniture;
         Sprite Artie;
-        List<Furniture> enemies;
         
 
         public Game1()
@@ -23,11 +22,9 @@ namespace Game1
 
         protected override void Initialize()
         {
-            ArtRoom = new Furniture();
-            ArtFurniture = new Furniture();
+            ArtRoom = new Sprite();
+            ArtFurniture = new Sprite();
             Artie = new Sprite();
-            enemies = new List<Furniture>();
-            enemies.Add(ArtRoom);
 
 
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
@@ -56,6 +53,7 @@ namespace Game1
 
         protected override void Update(GameTime gameTime)
         {
+            UpdateCollision();
             KeyboardState state = Keyboard.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.
@@ -73,9 +71,6 @@ namespace Game1
 
             if (state.IsKeyDown(Keys.Down))
                 Artie.Position.Y += 10;
-                
-
-            UpdateCollision();
             
 
             base.Update(gameTime);
@@ -83,7 +78,7 @@ namespace Game1
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.Blue);
             spriteBatch.Begin();
             ArtRoom.Draw(spriteBatch);
             ArtFurniture.Draw(spriteBatch);
@@ -95,33 +90,14 @@ namespace Game1
 
         private void UpdateCollision()
         {
-            // Use the Rectangle's built-in intersect function to
-            // determine if two objects are overlapping
-            Rectangle rectangle1;
-            Rectangle rectangle2;
-
-            // Only create the rectangle once for the player
-            rectangle1 = new Rectangle((int)Artie.Position.X,
-            (int)Artie.Position.Y,
-            Artie.Width,
-            Artie.Height);
-
-            // Do the collision between the player and the enemies
-            for (int i = 0; i < enemies.Count; i++)
-            {
-                rectangle2 = new Rectangle((int)enemies[i].Position.X,
-                (int)enemies[i].Position.Y,
-                enemies[i].Width,
-                enemies[i].Height);
-
-                // Determine if the two objects collided with each
-                // other
-                if (rectangle1.Intersects(rectangle2))
+            if (Artie.CollidesWith(ArtRoom))
                 {
-                    Artie.Position.X -= 10;
+                Artie.Position.Y += 1;
                 }
-
-            }
+            else
+                {
+                Artie.Position.Y -= 1;
+                }
         }
     }
 }
