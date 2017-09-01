@@ -40,9 +40,9 @@ namespace Game1
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Vector2 DeadCenter = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 4, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 4);
             Vector2 Zero = new Vector2(0, 0);
-            ArtRoom.Initialize(Content.Load<Texture2D>("RoomA/Arties-Room"), DeadCenter);
+            ArtRoom.Initialize(Content.Load<Texture2D>("RoomA/Arties-room"), DeadCenter);
             ArtFurniture.Initialize(Content.Load<Texture2D>("RoomA/Arties-Furniture"), DeadCenter);
-            Artie.Initialize(Content.Load<Texture2D>("RoomA/Art"), Zero);
+            Artie.Initialize(Content.Load<Texture2D>("RoomA/cross"), Zero);
         }
 
         protected override void UnloadContent()
@@ -53,7 +53,7 @@ namespace Game1
 
         protected override void Update(GameTime gameTime)
         {
-            UpdateCollision();
+
             KeyboardState state = Keyboard.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.
@@ -61,17 +61,20 @@ namespace Game1
                 Exit();
 
             if (state.IsKeyDown(Keys.Right))
-                Artie.Position.X += 10;
+                Artie.Position.X += 2;
 
             if (state.IsKeyDown(Keys.Left))
-                Artie.Position.X -= 10;
+                Artie.Position.X -= 2;
 
             if (state.IsKeyDown(Keys.Up))
-                Artie.Position.Y -= 10;
+                Artie.Position.Y -= 2;
 
             if (state.IsKeyDown(Keys.Down))
-                Artie.Position.Y += 10;
-            
+                Artie.Position.Y += 2;
+
+            if (ArtRoom.CollidesWith(Artie))
+                System.Diagnostics.Debug.WriteLine("SUCCCCCCCk");
+
 
             base.Update(gameTime);
         }
@@ -88,16 +91,6 @@ namespace Game1
             base.Draw(gameTime);
         }
 
-        private void UpdateCollision()
-        {
-            if (Artie.CollidesWith(ArtRoom))
-                {
-                Artie.Position.Y += 1;
-                }
-            else
-                {
-                Artie.Position.Y -= 1;
-                }
-        }
+
     }
 }
