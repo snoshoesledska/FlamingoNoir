@@ -40,12 +40,8 @@ namespace Game1
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, 1f/4, SpriteEffects.None, 0f);
+            spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
-
-
-
-
 
         public bool CollidesWith(Sprite other)
         {
@@ -58,13 +54,13 @@ namespace Game1
             // Get dimensions of texture
             int widthOther = other.Texture.Width;
             int heightOther = other.Texture.Height;
-            int widthMe = Texture.Width;
+            int widthMe = Texture.Width                                                                                                                                                                      ;
             int heightMe = Texture.Height;
 
-            if (calcPerPixel && ((Math.Min(widthOther, heightOther) > 100) || (Math.Min(widthMe, heightMe) > 100)))          // for small sizes (nobody will notice :P)
+            if (calcPerPixel && ((Math.Min(widthOther, heightOther) > 10) || (Math.Min(widthMe, heightMe) > 10)))          // for small sizes (nobody will notice :P)
             {
-                return Bounds.Intersects(other.Bounds) // If simple intersection fails, don't even bother with per-pixel
-                    && PerPixelCollision(this, other);
+                return Bounds.Intersects(other.Bounds) && PerPixelCollision(this, other);
+                
             }
             else
             {
@@ -74,39 +70,46 @@ namespace Game1
 
         static bool PerPixelCollision(Sprite a, Sprite b)
         {
-            // Get Color data of each Texture
-            Color[] bitsA = new Color[a.Texture.Width * a.Texture.Height];
-            a.Texture.GetData(bitsA);
-            Color[] bitsB = new Color[b.Texture.Width * b.Texture.Height];
-            b.Texture.GetData(bitsB);
-
             // Calculate the intersecting rectangle
             int x1 = Math.Max(a.Bounds.X, b.Bounds.X);
             int x2 = Math.Min(a.Bounds.X + a.Bounds.Width, b.Bounds.X + b.Bounds.Width);
 
+
             int y1 = Math.Max(a.Bounds.Y, b.Bounds.Y);
             int y2 = Math.Min(a.Bounds.Y + a.Bounds.Height, b.Bounds.Y + b.Bounds.Height);
 
-            // For each single pixel in the intersecting rectangle
-            for (int y = y1; y < y2; ++y)
-            {
-                for (int x = x1; x < x2; ++x)
-                {
-                    // Get the color from each texture
-                    Color c = bitsA[(x - a.Bounds.X) + (y - a.Bounds.Y) * a.Texture.Width];
-                    Color d = bitsB[(x - b.Bounds.X) + (y - b.Bounds.Y) * b.Texture.Width];
+            int RecWidth = (x2 - x1);
+            int RecHeight = (y2 - y1);
+            
+            // Get Color data of each Texture
 
-                    if (c.A != 0 && d.A != 0) // If both colors are not transparent (the alpha channel is not 0), then there is a collision
-                    {
-                        return true;
-                    }
+            Rectangle Arect = new Rectangle(x1-a.Bounds.X, y1-a.Bounds.Y, RecWidth, RecHeight);
+            Rectangle Brect = new Rectangle(x1 - b.Bounds.X, y1 - b.Bounds.Y, RecWidth, RecHeight);
+
+            Color[] bitsA = new Color[RecWidth * RecHeight];
+            a.Texture.GetData(0, Arect, bitsA, 0, RecWidth * RecHeight);
+
+            Color[] bitsB = new Color[RecWidth * RecHeight];
+
+            b.Texture.GetData(0, Brect, bitsB, 0, RecWidth * RecHeight);
+            // For each single pixel in the intersecting rectangle
+
+
+            for (int x = 0; x < bitsB.Length; ++x)
+            {
+                Color c = bitsA[x];
+                Color d = bitsB[x];
+
+                if (c.A != 0 && d.A != 0)
+                {
+                    System.Diagnostics.Debug.WriteLine("uuuuuuugh");
+                    return true;
                 }
             }
-            // If no collision occurred by now, we're clear.
             return false;
         }
 
-        private Rectangle bounds = Rectangle.Empty;
+
         public virtual Rectangle Bounds
         {
             get
@@ -114,8 +117,8 @@ namespace Game1
                 return new Rectangle(
                     (int)Position.X,
                     (int)Position.Y,
-                    Texture.Width/4,
-                    Texture.Height/4);
+                    Texture.Width,
+                    Texture.Height);
             }
 
         }

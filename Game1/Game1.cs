@@ -38,11 +38,11 @@ namespace Game1
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Vector2 DeadCenter = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width / 4, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height / 4);
+            Vector2 DeadCenter = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width/2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height/2);
             Vector2 Zero = new Vector2(0, 0);
-            ArtRoom.Initialize(Content.Load<Texture2D>("RoomA/Arties-room"), DeadCenter);
+            ArtRoom.Initialize(Content.Load<Texture2D>("RoomA/cube"), DeadCenter);
             ArtFurniture.Initialize(Content.Load<Texture2D>("RoomA/Arties-Furniture"), DeadCenter);
-            Artie.Initialize(Content.Load<Texture2D>("RoomA/cross"), Zero);
+            Artie.Initialize(Content.Load<Texture2D>("RoomA/green"), Zero);
         }
 
         protected override void UnloadContent()
@@ -61,19 +61,19 @@ namespace Game1
                 Exit();
 
             if (state.IsKeyDown(Keys.Right))
-                Artie.Position.X += 2;
+                Artie.Position.X += 8;
 
             if (state.IsKeyDown(Keys.Left))
-                Artie.Position.X -= 2;
+                Artie.Position.X -= 8;
 
             if (state.IsKeyDown(Keys.Up))
-                Artie.Position.Y -= 2;
+                Artie.Position.Y -= 8;
 
             if (state.IsKeyDown(Keys.Down))
-                Artie.Position.Y += 2;
+                Artie.Position.Y += 8;
 
             if (ArtRoom.CollidesWith(Artie))
-                System.Diagnostics.Debug.WriteLine("SUCCCCCCCk");
+                Artie.Position.Y += 2;
 
 
             base.Update(gameTime);
