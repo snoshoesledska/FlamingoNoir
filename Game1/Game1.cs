@@ -12,7 +12,9 @@ namespace Game1
         Sprite ArtRoom;
         Sprite ArtFurniture;
         Sprite Artie;
-        
+        Sprite False;
+        Sprite True;
+
 
         public Game1()
         {
@@ -25,6 +27,8 @@ namespace Game1
             ArtRoom = new Sprite();
             ArtFurniture = new Sprite();
             Artie = new Sprite();
+            False = new Sprite();
+            True = new Sprite();
 
 
             graphics.PreferredBackBufferWidth = GraphicsDevice.DisplayMode.Width;
@@ -38,11 +42,14 @@ namespace Game1
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            Vector2 DeadCenter = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width/2, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height/2);
+            Vector2 DeadCenter = new Vector2(GraphicsDevice.Viewport.TitleSafeArea.X + GraphicsDevice.Viewport.TitleSafeArea.Width/4, GraphicsDevice.Viewport.TitleSafeArea.Y + GraphicsDevice.Viewport.TitleSafeArea.Height/4);
+            Vector2 arb = new Vector2(600, 400);
             Vector2 Zero = new Vector2(0, 0);
-            ArtRoom.Initialize(Content.Load<Texture2D>("RoomA/cube"), DeadCenter);
-            ArtFurniture.Initialize(Content.Load<Texture2D>("RoomA/Arties-Furniture"), DeadCenter);
-            Artie.Initialize(Content.Load<Texture2D>("RoomA/green"), Zero);
+            ArtRoom.Initialize(Content.Load<Texture2D>("RoomA/Arties-Room25"), DeadCenter);
+            False.Initialize(Content.Load<Texture2D>("RoomA/false"), Zero);
+            True.Initialize(Content.Load<Texture2D>("RoomA/true"), Zero);
+            ArtFurniture.Initialize(Content.Load<Texture2D>("RoomA/Arties-Furniture25"), DeadCenter);
+            Artie.Initialize(Content.Load<Texture2D>("RoomA/Art32"), Zero);
         }
 
         protected override void UnloadContent()
@@ -53,7 +60,6 @@ namespace Game1
 
         protected override void Update(GameTime gameTime)
         {
-
             KeyboardState state = Keyboard.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.
@@ -73,7 +79,16 @@ namespace Game1
                 Artie.Position.Y += 8;
 
             if (ArtRoom.CollidesWith(Artie))
-                Artie.Position.Y += 2;
+            {
+                False.Active = false;
+                True.Active = true;
+            }
+            else
+            {
+                False.Active = true;
+                True.Active = false;
+            }
+                
 
 
             base.Update(gameTime);
@@ -81,11 +96,13 @@ namespace Game1
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Blue);
+            GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
             ArtRoom.Draw(spriteBatch);
             ArtFurniture.Draw(spriteBatch);
             Artie.Draw(spriteBatch);
+            False.Draw(spriteBatch);
+            True.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

@@ -26,6 +26,9 @@ namespace Game1
             get { return Texture.Height; }
         }
 
+
+        public bool Active = true;
+
         public void Initialize(Texture2D texture, Vector2 position)
         {
             Texture = texture;
@@ -40,6 +43,7 @@ namespace Game1
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            if (Active)
             spriteBatch.Draw(Texture, Position, null, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
         }
 
