@@ -26,7 +26,6 @@ namespace Game1
             get { return Texture.Height; }
         }
 
-
         public bool Active = true;
 
         public void Initialize(Texture2D texture, Vector2 position)
@@ -58,7 +57,7 @@ namespace Game1
             // Get dimensions of texture
             int widthOther = other.Texture.Width;
             int heightOther = other.Texture.Height;
-            int widthMe = Texture.Width                                                                                                                                                                      ;
+            int widthMe = Texture.Width;                                                                                                                                                                      ;
             int heightMe = Texture.Height;
 
             if (calcPerPixel && ((Math.Min(widthOther, heightOther) > 10) || (Math.Min(widthMe, heightMe) > 10)))          // for small sizes (nobody will notice :P)
@@ -90,11 +89,12 @@ namespace Game1
             Rectangle Arect = new Rectangle(x1-a.Bounds.X, y1-a.Bounds.Y, RecWidth, RecHeight);
             Rectangle Brect = new Rectangle(x1 - b.Bounds.X, y1 - b.Bounds.Y, RecWidth, RecHeight);
 
+            
+
             Color[] bitsA = new Color[RecWidth * RecHeight];
             a.Texture.GetData(0, Arect, bitsA, 0, RecWidth * RecHeight);
 
             Color[] bitsB = new Color[RecWidth * RecHeight];
-
             b.Texture.GetData(0, Brect, bitsB, 0, RecWidth * RecHeight);
             // For each single pixel in the intersecting rectangle
 
@@ -106,7 +106,6 @@ namespace Game1
 
                 if (c.A != 0 && d.A != 0)
                 {
-                    System.Diagnostics.Debug.WriteLine("uuuuuuugh");
                     return true;
                 }
             }
@@ -119,10 +118,14 @@ namespace Game1
             get
             {
                 return new Rectangle(
-                    (int)Position.X,
-                    (int)Position.Y,
+                    (int)(Position.X),
+                    (int)(Position.Y),
                     Texture.Width,
                     Texture.Height);
+            }
+            set
+            {
+
             }
 
         }
