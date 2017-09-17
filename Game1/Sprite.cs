@@ -1,7 +1,8 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Game1
 {
@@ -83,13 +84,12 @@ namespace Game1
 
             int RecWidth = (x2 - x1);
             int RecHeight = (y2 - y1);
-            
+
             // Get Color data of each Texture
+
 
             Rectangle Arect = new Rectangle(x1-a.Bounds.X, y1-a.Bounds.Y, RecWidth, RecHeight);
             Rectangle Brect = new Rectangle(x1 - b.Bounds.X, y1 - b.Bounds.Y, RecWidth, RecHeight);
-
-            
 
             Color[] bitsA = new Color[RecWidth * RecHeight];
             a.Texture.GetData(0, Arect, bitsA, 0, RecWidth * RecHeight);
@@ -111,7 +111,6 @@ namespace Game1
             }
             return false;
         }
-
 
         public virtual Rectangle Bounds
         {
